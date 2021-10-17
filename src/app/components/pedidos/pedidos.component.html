@@ -1,0 +1,118 @@
+<mat-card class="home mat-elevation-z3">
+  <mat-card-title class="title"> Bem Vindo! </mat-card-title>
+  <mat-card-subtitle class="subtitle">
+    <p class="subtitlr__p">Faça a viagem dos seus sonhos!</p>
+    <p>
+      Use milhas para ter os melhores pacotes de viagens e aproveite suas férias
+    </p>
+  </mat-card-subtitle>
+</mat-card>
+
+<main>
+  <div class="container">
+    <div class="opcoes">
+      <label class="c100">
+        País de origem:
+        <select [(ngModel)]="paisOrigem" (ngModelChange)="cidadeOrigem = null">
+          <option *ngFor="let pais of paises" [ngValue]="pais">
+            {{ pais.country }}
+          </option>
+        </select>
+      </label>
+
+      <label class="c100">
+        Cidade de origem:
+        <select [(ngModel)]="cidadeOrigem">
+          <ng-container *ngIf="paisOrigem != null">
+            <option *ngFor="let cidade of paisOrigem.cities" [ngValue]="cidade">
+              {{ cidade.city }}
+            </option>
+          </ng-container>
+        </select>
+      </label>
+
+      <label class="c100">
+        Pais de destino:
+        <select
+          [(ngModel)]="paisDestino"
+          (ngModelChange)="cidadeDestino = null"
+        >
+          <option *ngFor="let pais of paises" [ngValue]="pais">
+            {{ pais.country }}
+          </option>
+        </select>
+      </label>
+
+      <label class="c100">
+        Cidade de destino:
+        <select [(ngModel)]="cidadeDestino">
+          <ng-container *ngIf="paisDestino != null">
+            <option *ngFor="let city of paisDestino.cities" [ngValue]="city">
+              {{ city.city }}
+            </option>
+          </ng-container>
+        </select>
+      </label>
+
+      <label class="c50">
+        Adultos:
+        <input [(ngModel)]="adultos" type="number" min="0" />
+      </label>
+      <label class="c50">
+        Crianças:
+        <input [(ngModel)]="criancas" type="number" min="0" />
+      </label>
+
+      <label class="c50"
+        ><input
+          name="classe"
+          type="radio"
+          [value]="false"
+          [(ngModel)]="primeiraClasse"
+        />
+        Econômica
+      </label>
+      <label class="c50"
+        ><input
+          name="classe"
+          type="radio"
+          [value]="true"
+          [(ngModel)]="primeiraClasse"
+        />
+        Executiva
+      </label>
+
+      <label class="c100"
+        >Utilizar {{ milhas }} milhas:
+        <input
+          name="classe"
+          type="range"
+          [(ngModel)]="milhas"
+          [max]="maxMilhas"
+          step="100"
+        />
+      </label>
+    </div>
+
+    <div class="simulacao">
+      <p><strong>Resumo da viagem</strong></p>
+      <p *ngIf="errorMessage">{{ errorMessage }}</p>
+      <ng-container *ngIf="!errorMessage">
+        <p>Origem: {{ cidadeOrigem.city }} - {{ paisOrigem.country }}</p>
+        <p>Destino: {{ cidadeDestino?.city }} - {{ paisDestino?.country }}</p>
+        <p>Distância: {{ distance | number: "0.0-0" }} km</p>
+        <p>{{ adultos }} adulto(s), {{ criancas }} criança(s)</p>
+        <p>
+          Tipo de passagem: {{ primeiraClasse ? "Executiva" : "Econômica" }}
+        </p>
+        <p>{{ procePorAdulto | currency }} por adulto</p>
+        <p>{{ precoPorCrianca | currency }} por criança</p>
+        <p>Milhas: {{ milhas }}</p>
+        <p>Valor abatido por milhas: {{ precoMilhas | currency }}</p>
+        <p>Total: {{ precoTotal - precoMilhas | currency }}</p>
+      </ng-container>
+    </div>
+  </div>
+</main>
+
+<!-- <p>{{ paises }}</p> -->
